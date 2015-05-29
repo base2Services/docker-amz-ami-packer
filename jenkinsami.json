@@ -21,7 +21,8 @@
 		"inline": [
 			"sleep 30",
 		"sudo yum install -y docker",
-		"sudo useradd -G docker ec2-user"
+		"sudo useradd -G docker ec2-user",
+		"sudo docker pull base2jenkins/web-builder-docker base2jenkins/frostbite base2jenkins/php-ssmtp base2jenkins/icinga2"
 			]
 	}]
 
