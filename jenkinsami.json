@@ -1,5 +1,7 @@
 {
   "variables": {
+    "vpc_id": "",
+    "subnet_id": "",
     "aws_access_key": "",
     "aws_secret_key": ""
   },
@@ -12,9 +14,9 @@
     "instance_type": "t2.micro",
     "ssh_username": "ec2-user",
     "ami_name": "packer-example {{timestamp}}",
-		"vpc_id": "vpc-e9fb2b8c",
+		"vpc_id": "{{user `vpc_id`}}",
 		"associate_public_ip_address": "true",
-		"subnet_id": "subnet-cc2cfcbb"
+		"subnet_id": "{{user `subnet_id`}}"
   }],
 	"provisioners": [{
 		"type": "shell",
@@ -22,7 +24,11 @@
 			"sleep 30",
 		"sudo yum install -y docker",
 		"sudo useradd -G docker ec2-user",
-		"sudo docker pull base2jenkins/web-builder-docker base2jenkins/frostbite base2jenkins/php-ssmtp base2jenkins/icinga2"
+		"sudo service docker restart",
+		"sudo docker pull base2jenkins/web-builder-docker",
+		"sudo docker pull base2jenkins/frostbite",
+		"sudo docker pull base2jenkins/php-ssmtp",
+		"sudo docker pull base2jenkins/icinga2"
 			]
 	}]
 
