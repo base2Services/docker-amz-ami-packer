@@ -28,6 +28,8 @@
 		"sudo docker pull base2jenkins/web-builder-docker",
 		"sudo docker pull base2jenkins/frostbite",
 		"sudo docker pull base2jenkins/php-ssmtp",
+		"sudo docker pull cgswong/aws:s3cmd",
+		"sudo docker pull golang:1.4",
 		"sudo docker pull base2jenkins/icinga2"
 			]
 	}]
