@@ -36,7 +36,7 @@
 		}, 
 		{
 		  "type": "file",
-		  "source": "/home/ec2-user/.ssh/authorized_keys",
+		  "source": "authorized_keys",
 		  "destination": "/tmp/ak"
 		},
 		{
