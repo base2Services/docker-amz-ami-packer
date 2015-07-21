@@ -17,21 +17,36 @@
 		"vpc_id": "{{user `vpc_id`}}",
 		"associate_public_ip_address": "true",
 		"subnet_id": "{{user `subnet_id`}}"
-  }],
-	"provisioners": [{
-		"type": "shell",
-		"inline": [
-			"sleep 30",
-		"sudo yum install -y docker",
-		"sudo useradd -G docker ec2-user",
-		"sudo service docker restart",
-		"sudo docker pull base2jenkins/web-builder-docker",
-		"sudo docker pull base2jenkins/frostbite",
-		"sudo docker pull base2jenkins/php-ssmtp",
-		"sudo docker pull cgswong/aws:s3cmd",
-		"sudo docker pull golang:1.4",
-		"sudo docker pull base2jenkins/icinga2"
+   }],
+"provisioners": [
+		{
+			"type": "shell",
+			"inline": [
+				"sleep 30",
+				"sudo yum install -y docker",
+				"sudo useradd -G docker ec2-user",
+				"sudo service docker restart",
+				"sudo docker pull base2jenkins/web-builder-docker",
+				"sudo docker pull base2jenkins/frostbite",
+				"sudo docker pull base2jenkins/php-ssmtp",
+				"sudo docker pull cgswong/aws:s3cmd",
+				"sudo docker pull golang:1.4",
+				"sudo docker pull base2jenkins/icinga2"
 			]
-	}]
+		}, 
+		{
+		  "type": "file",
+		  "source": "/home/ec2-user/.ssh/authorized_keys",
+		  "destination": "/tmp/ak"
+		},
+		{
+			"type": "shell",
+			"inline": [
+					"mkdir -p /home/ec2-user/.ssh",
+					"cat /tmp/ak >> /home/ec2-user/.ssh/authorized_keys",
+					"sudo rm -fv /tmp/ak"
+			]
+		}
+	]
 
 }
