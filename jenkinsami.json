@@ -1,23 +1,30 @@
 {
-  "variables": {
-    "vpc_id": "",
-    "subnet_id": "",
-    "aws_access_key": "",
-    "aws_secret_key": ""
-  },
-  "builders": [{
-    "type": "amazon-ebs",
-    "access_key": "{{user `aws_access_key`}}",
-    "secret_key": "{{user `aws_secret_key`}}",
-    "region": "ap-southeast-2",
-    "source_ami": "ami-fd9cecc7",
-    "instance_type": "t2.micro",
-    "ssh_username": "ec2-user",
-    "ami_name": "Jenkins-Slave-AMI-Packer {{timestamp}}",
+	"variables": {
+		"vpc_id": "",
+		"subnet_id": "",
+		"aws_access_key": "",
+		"aws_secret_key": ""
+	},
+	"builders": [{
+		"type": "amazon-ebs",
+		"access_key": "{{user `aws_access_key`}}",
+		"secret_key": "{{user `aws_secret_key`}}",
+		"region": "ap-southeast-2",
+		"source_ami": "ami-fd9cecc7",
+		"instance_type": "t2.micro",
+		"ssh_username": "ec2-user",
+		"ami_name": "Jenkins-Slave-AMI-Packer {{timestamp}}",
 		"vpc_id": "{{user `vpc_id`}}",
 		"associate_public_ip_address": "true",
-		"subnet_id": "{{user `subnet_id`}}"
-   }],
+		"subnet_id": "{{user `subnet_id`}}",
+		"launch_block_device_mappings": [
+			{
+				"device_name": "/dev/sda1",
+				"volume_size": 40,
+				"delete_on_termination": true
+			}
+		]
+	}],
 	"provisioners": [
 		{
 			"type": "shell",
@@ -36,16 +43,16 @@
 			]
 		}, 
 		{
-		  "type": "file",
-		  "source": "authorized_keys",
-		  "destination": "/tmp/ak"
+			"type": "file",
+			"source": "authorized_keys",
+			"destination": "/tmp/ak"
 		},
 		{
 			"type": "shell",
 			"inline": [
-					"mkdir -p /home/ec2-user/.ssh",
-					"cat /tmp/ak >> /home/ec2-user/.ssh/authorized_keys",
-					"sudo rm -fv /tmp/ak"
+				"mkdir -p /home/ec2-user/.ssh",
+				"cat /tmp/ak >> /home/ec2-user/.ssh/authorized_keys",
+				"sudo rm -fv /tmp/ak"
 			]
 		}
 	]
